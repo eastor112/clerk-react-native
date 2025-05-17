@@ -1,86 +1,90 @@
 import { apiUrl } from "../environment";
 
 export abstract class APIBase {
-  /** Base URL for all requests */
   private readonly base = apiUrl;
 
-  /** Build the full URL from a relative path */
   protected getPath(path: string): string {
     return `${this.base}${path}`;
   }
 
-  /** Generates default headers: JSON content type + Bearer if token is provided */
-  private defaultHeaders(token?: string): Headers {
-    const headers = new Headers({ "Content-Type": "application/json" });
+  protected defaultHeaders(token?: string): Record<string, string> {
+    const headers: Record<string, string> = {
+      "Content-Type": "application/json",
+    };
     if (token) {
-      headers.set("Authorization", `Bearer ${token}`);
+      headers["Authorization"] = `Bearer ${token}`;
     }
     return headers;
   }
 
-  /**
-   * Core fetch that returns the raw Response.
-   *
-   * @param request   Can be a URL string or Request object
-   * @param token?    Optional Bearer token
-   * @param headers?  Optional headers; if omitted, uses defaultHeaders(token)
-   * @param noCache?  If true, forces 'no-cache' policy
-   */
   protected async fetchResponse(
-    request: RequestInfo,
+    path: string,
+    init: RequestInit = {},
     token?: string,
-    headers: Headers = this.defaultHeaders(token),
-    noCache: boolean = false
+    noCache = false
   ): Promise<Response> {
-    const res = await fetch(
-      typeof request === "string" ? this.getPath(request) : request,
-      {
-        headers,
-        cache: noCache ? "no-cache" : undefined,
+    const url = this.getPath(path);
+
+    const headers = {
+      ...this.defaultHeaders(token),
+      ...(init.headers as Record<string, string> | undefined),
+    };
+
+    const finalInit: RequestInit = {
+      ...init,
+      headers,
+      cache: noCache ? "no-cache" : init.cache,
+      body: typeof init.body === "object" && init.body !== null
+        ? JSON.stringify(init.body)
+        : init.body,
+    };
+
+    try {
+      const res = await fetch(url, finalInit);
+
+      if (!res.ok) {
+        let errorMessage = `Fetch failed (${res.status}): ${res.statusText}`;
+        try {
+          const errorBody = await res.text();
+          errorMessage += `\n${errorBody}`;
+        } catch { }
+        throw new Error(errorMessage);
       }
-    );
-    if (!res.ok) {
-      throw new Error(`Fetch failed (${res.status}): ${res.statusText}`);
+
+      return res;
+    } catch (err) {
+      console.log("fetch error:", err);
+      throw err; // importante propagarlo
     }
-    return res;
   }
 
-  /**
-   * Fetches and returns parsed JSON.
-   */
   protected async fetchJSON<T = any>(
-    request: RequestInfo,
+    path: string,
+    init: RequestInit = {},
     token?: string,
-    headers: Headers = this.defaultHeaders(token),
-    noCache: boolean = false
+    noCache = false
   ): Promise<T> {
-    const res = await this.fetchResponse(request, token, headers, noCache);
+    const res = await this.fetchResponse(path, init, token, noCache);
     return res.json();
   }
 
-  /**
-   * Fetches and returns a Blob.
-   */
   protected async fetchBlob(
-    request: RequestInfo,
+    path: string,
+    init: RequestInit = {},
     token?: string,
-    headers: Headers = this.defaultHeaders(token),
-    noCache: boolean = false
+    noCache = false
   ): Promise<Blob> {
-    const res = await this.fetchResponse(request, token, headers, noCache);
+    const res = await this.fetchResponse(path, init, token, noCache);
     return res.blob();
   }
 
-  /**
-   * Fetches and returns plain text.
-   */
   protected async fetchText(
-    request: RequestInfo,
+    path: string,
+    init: RequestInit = {},
     token?: string,
-    headers: Headers = this.defaultHeaders(token),
-    noCache: boolean = false
+    noCache = false
   ): Promise<string> {
-    const res = await this.fetchResponse(request, token, headers, noCache);
+    const res = await this.fetchResponse(path, init, token, noCache);
     return res.text();
   }
 }

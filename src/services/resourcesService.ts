@@ -1,8 +1,12 @@
 import { APIBase } from "./base";
 
 class ResourcesService extends APIBase {
-  testBase(token: string) {
-    return this.fetchJSON("/api/test", token);
+
+
+  validateToken(token: string) {
+    return this.fetchJSON("/api/auth/login", {
+      method: "POST",
+    }, token);
   }
 }
 

@@ -12,6 +12,8 @@
     "@clerk/clerk-expo": "^2.11.4",
     "@hookform/resolvers": "^5.0.1",
     "@react-native-async-storage/async-storage": "^2.1.2",
+    "@tamagui/config": "^1.126.12",
+    "@tamagui/core": "^1.126.12",
     "expo": "~53.0.9",
     "expo-constants": "~17.1.6",
     "expo-linking": "~7.1.5",
@@ -26,6 +28,7 @@
     "react-native-safe-area-context": "5.4.0",
     "react-native-screens": "~4.10.0",
     "react-native-web": "^0.20.0",
+    "tamagui": "^1.126.12",
     "zod": "^3.24.4",
     "zustand": "^5.0.4"
   },

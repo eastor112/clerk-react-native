@@ -39,7 +39,13 @@ const Home = () => {
           const token = await getToken();
 
           if (token) {
-            resources.testBase(token);
+            try {
+              const asdf = await resources.validateToken(token);
+              console.log(asdf);
+            } catch (e) {
+              console.log("error");
+              console.log(e);
+            }
           }
         }}
       >
