@@ -5,7 +5,6 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link, useRouter } from 'expo-router';
 import { useSignIn } from '@clerk/clerk-expo';
-import { useUserStore } from '../../store/auth';
 
 const schema = z.object({
   email: z.string().email('Email inválido'),
@@ -43,7 +42,7 @@ export default function App() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Iniciar sesión</Text>
+      <Text style={styles.title}>Iniciar sesión con clerk</Text>
       <StatusBar style='auto' />
 
       <Controller

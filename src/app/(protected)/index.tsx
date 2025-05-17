@@ -40,10 +40,9 @@ const Home = () => {
 
           if (token) {
             try {
-              const asdf = await resources.validateToken(token);
-              console.log(asdf);
+              const validation = await resources.validateToken(token);
+              console.log(validation);
             } catch (e) {
-              console.log("error");
               console.log(e);
             }
           }

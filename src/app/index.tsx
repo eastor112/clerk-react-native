@@ -2,8 +2,6 @@ import { Text, View, StyleSheet, Pressable } from 'react-native';
 import { Link } from 'expo-router';
 import { useUser } from '@clerk/clerk-expo';
 
-import { useEffect, useState } from 'react';
-
 export default function IndexScreen() {
   const { user } = useUser();
 
@@ -20,16 +18,16 @@ export default function IndexScreen() {
       </Link>
 
       <Link href='/sign-up' asChild>
-        <Pressable style={[styles.button, styles.outlineButton]}>
-          <Text style={[styles.buttonText, styles.outlineButtonText]}>
+        <Pressable style={{ ...styles.button, ...styles.outlineButton }}>
+          <Text style={{ ...styles.buttonText, ...styles.outlineButtonText }}>
             Crear cuenta
           </Text>
         </Pressable>
       </Link>
 
       <Link href='/(protected)' asChild>
-        <Pressable style={[styles.button, styles.outlineButton]}>
-          <Text style={[styles.buttonText, styles.outlineButtonText]}>
+        <Pressable style={{ ...styles.button, ...styles.outlineButton }}>
+          <Text style={{ ...styles.buttonText, ...styles.outlineButtonText }}>
             Go to home
           </Text>
         </Pressable>

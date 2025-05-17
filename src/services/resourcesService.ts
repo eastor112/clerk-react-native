@@ -4,7 +4,7 @@ class ResourcesService extends APIBase {
 
 
   validateToken(token: string) {
-    return this.fetchJSON("/api/auth/login", {
+    return this.fetchJSON("/auth/login", {
       method: "POST",
     }, token);
   }
