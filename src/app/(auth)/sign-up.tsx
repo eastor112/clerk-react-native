@@ -81,10 +81,11 @@ export default function SignUpScreen() {
         <Text>Verify your email</Text>
         <TextInput
           value={code}
+          style={styles.input}
           placeholder='Enter your verification code'
           onChangeText={(code) => setCode(code)}
         />
-        <TouchableOpacity onPress={onVerifyPress}>
+        <TouchableOpacity style={styles.button} onPress={onVerifyPress}>
           <Text>Verify</Text>
         </TouchableOpacity>
       </>
