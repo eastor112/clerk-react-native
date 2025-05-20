@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, Pressable } from 'react-native';
 import React from 'react';
 import { useRouter } from 'expo-router';
 import { useAuth, useClerk } from '@clerk/clerk-expo';
-import resources from '../../services/resourcesService';
+import resources from '../../services/authService';
 
 const Home = () => {
   const router = useRouter();

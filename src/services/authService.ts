@@ -1,13 +1,14 @@
 import { APIBase } from "./base";
 
-class ResourcesService extends APIBase {
-
-
+class AuthService extends APIBase {
   validateToken(token: string) {
     return this.fetchJSON("/auth/login", {
       method: "POST",
     }, token);
   }
+  async  asdfsd() {
+
+  }
 }
 
-export default new ResourcesService();
+export default new AuthService();
